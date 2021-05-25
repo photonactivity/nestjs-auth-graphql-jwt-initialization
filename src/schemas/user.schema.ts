@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty } from 'class-validator'; // TODO 完善输入验证
+import { IsEmail, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type UserDocument = User & Document;
