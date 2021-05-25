@@ -49,9 +49,16 @@ export class UsersService {
   
   async update(_id: string, updateUserInput: UpdateUserInput) {
     try {
-      updateUserInput.password = await bcrypt
-        .hash(updateUserInput.password, 10)
-        .then((r) => r);
+      const isUser = await this.UserModel.findOne({
+        useremail: updateUserInput.useremail,
+      });
+      if (isUser) {
+        updateUserInput.password = await bcrypt
+          .hash(updateUserInput.password, 10)
+          .then((r) => r);
+      } else {
+        throw new GraphQLError('Email address already Error');
+      }
       return await this.UserModel.findByIdAndUpdate(_id, updateUserInput, {
         new: true,
       }).exec();
