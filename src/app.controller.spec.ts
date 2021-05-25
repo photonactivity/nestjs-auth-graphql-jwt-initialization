@@ -15,8 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "photondances api"', () => {
-      expect(appController.getHello()).toBe('photondances api');
+    it('should return "photondance api"', () => {
+      expect(appController.getHello()).toBe('photondance api');
     });
   });
 });
