@@ -19,7 +19,7 @@ export class UsersService {
         useremail: createUserInput.useremail,
       });
       if (isUser) {
-        throw new GraphQLError('Email address already exists');
+        throw new GraphQLError('🥺 Email address already exists');
       } else {
         createUserInput.password = await bcrypt
           .hash(createUserInput.password, 10)
@@ -57,7 +57,7 @@ export class UsersService {
           .hash(updateUserInput.password, 10)
           .then((r) => r);
       } else {
-        throw new GraphQLError('Email address already Error');
+        throw new GraphQLError('🥺 Email address already Error');
       }
       return await this.UserModel.findByIdAndUpdate(_id, updateUserInput, {
         new: true,
