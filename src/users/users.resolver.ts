@@ -4,19 +4,11 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from 'src/schemas/user.schema';
 import { Types } from 'mongoose';
-import {
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
 
-@ApiTags('User')
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) { }
 
-  @ApiOperation({ summary: 'Create User' })
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @Mutation(() => User)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     try {
@@ -25,7 +17,7 @@ export class UsersResolver {
       console.error(err);
     }
   }
-
+  
   @Query(() => [User], { name: 'users' })
   async findAll() {
     try {
