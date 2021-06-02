@@ -1,18 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
 
-export type HeroesDocument = Heroes & Document;
+export type HeroDocument = Hero & Document;
 
 @ObjectType()
 @Schema()
-export class Heroes {
+export class Hero {
+  @Field(() => String)
+  _id: Types.ObjectId;
   @Field(type => String)
   @Prop()
-  title: string;
+  HeroTitle: string;
   @Field(type => String)
   @Prop()
-  lead: string;
+  HeroBody: string;
 }
 
-export const HeroesSchema = SchemaFactory.createForClass(Heroes);
+export const HeroSchema = SchemaFactory.createForClass(Hero);

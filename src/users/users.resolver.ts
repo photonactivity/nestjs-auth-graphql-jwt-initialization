@@ -4,6 +4,8 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from 'src/schemas/user.schema';
 import { Types } from 'mongoose';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/guards/gql-jwt.guard';
 
 @Resolver(() => User)
 export class UsersResolver {
@@ -19,6 +21,7 @@ export class UsersResolver {
   }
   
   @Query(() => [User], { name: 'users' })
+  @UseGuards(GqlAuthGuard)
   async findAll() {
     try {
       return await this.usersService.findAll();
@@ -28,6 +31,7 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
+  @UseGuards(GqlAuthGuard)
   async findOne(@Args('id', { type: () => String }) _id: Types.ObjectId) {
     try {
       return await this.usersService.findOne(_id);
@@ -36,7 +40,20 @@ export class UsersResolver {
     }
   }
    
+  @Mutation(() => String)
+  async login(
+    @Args('useremail') useremail: string,
+    @Args('password') password: string,
+  ) {
+    try {
+      return await this.usersService.login({ useremail, password });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
   async updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
     try{
       return await this.usersService.update(updateUserInput._id, updateUserInput);
@@ -46,6 +63,7 @@ export class UsersResolver {
   }
   
   @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
   async removeUser(@Args('id', { type: () => String }) _id: Types.ObjectId) {
     try {
       return await this.usersService.remove(_id);

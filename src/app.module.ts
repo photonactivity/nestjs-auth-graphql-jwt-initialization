@@ -18,7 +18,8 @@ import config from '../configs/config';
     }),
     MongooseModule.forRoot('mongodb+srv://photonactivity:@liujing1984@cluster0.79oqw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'),
     UsersModule,
-    HeroesModule],
+    HeroesModule,
+    ],
   controllers: [AppController],
   providers: [AppService],
 })

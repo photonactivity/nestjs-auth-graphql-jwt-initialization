@@ -6,10 +6,12 @@ import { User, UserDocument } from 'src/schemas/user.schema';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private jwtService: JwtService,
     @InjectModel(User.name) private UserModel: Model<UserDocument>,
   ) { }
 
@@ -46,7 +48,18 @@ export class UsersService {
       console.error(err);
     }
   }
-  
+
+  async login({ password, useremail }) {
+    try {
+      const user = await this.UserModel.findOne({ useremail });
+      return user && (await bcrypt.compare(password, user.password))
+        ? await this.jwtService.signAsync({ useremail, _id: user._id })
+        : new GraphQLError('Nah homie, wrong password/email');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async update(_id: string, updateUserInput: UpdateUserInput) {
     try {
       const isUser = await this.UserModel.findOne({
@@ -62,16 +75,16 @@ export class UsersService {
       return await this.UserModel.findByIdAndUpdate(_id, updateUserInput, {
         new: true,
       }).exec();
-    } catch(err) {
-    console.error(err);
+    } catch (err) {
+      console.error(err);
+    }
   }
-}
 
-async remove(_id: Types.ObjectId) {
-  try {
-    return await this.UserModel.findByIdAndDelete(_id).exec();
-  } catch (err) {
-    console.error(err);
+  async remove(_id: Types.ObjectId) {
+    try {
+      return await this.UserModel.findByIdAndDelete(_id).exec();
+    } catch (err) {
+      console.error(err);
+    }
   }
-}
 }
