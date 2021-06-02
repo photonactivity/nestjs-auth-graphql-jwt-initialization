@@ -12,6 +12,7 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) { }
 
   @Mutation(() => User)
+  @UseGuards(GqlAuthGuard)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     try {
       return await this.usersService.create(createUserInput);
