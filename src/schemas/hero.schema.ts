@@ -11,10 +11,10 @@ export class Hero {
   _id: Types.ObjectId;
   @Field(type => String)
   @Prop()
-  HeroTitle: string;
+  heroTitle: string;
   @Field(type => String)
   @Prop()
-  HeroBody: string;
+  heroBody: string;
 }
 
 export const HeroSchema = SchemaFactory.createForClass(Hero);
